@@ -2,6 +2,10 @@
 
 This project contains source code and supporting files for a serverless application that you can deploy with the SAM CLI. It includes the following files and folders.
 
+This project assumes you already have RDS Aurora Mysql cluster up and running. An RDS proxy instance
+is also setup with force IAM authentication enabled. You can choose to follow [this workshop](https://awsauroralabsmy.com/) to have aurora cluster and 
+RDS proxy setup.
+
 ## Deploy the sample application
 
 The Serverless Application Model Command Line Interface (SAM CLI) is an extension of the AWS CLI that adds functionality for building and testing Lambda applications. It uses Docker to run your functions in an Amazon Linux environment that matches Lambda. It can also emulate your application's build environment and API.
