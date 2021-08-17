@@ -28,6 +28,9 @@ Parameters:
   ProxyResourceId:
     Type: String
     Description: "RDS Proxy resource id. This is last part of RDS proxy ARN, ex: prx-<hash>"
+  LambdaSecurityGroupId:
+    Type: AWS::EC2::SecurityGroup::Id
+    Description: "Security group id for lambda function. Make sure traffic from this SG is allowed in database and proxy security group"
 
 Globals:
   Function:
@@ -37,22 +40,6 @@ Resources:
   SampleHttpApi:
     Type: AWS::Serverless::HttpApi
 
-  LambdaSecurityGroup:
-    Type: AWS::EC2::SecurityGroup
-    Properties:
-      GroupDescription: "Lambda with RDS on SAM Security Group"
-      VpcId: !Ref Vpc
-      SecurityGroupEgress:
-        - CidrIp: "0.0.0.0/0"
-          FromPort: 0
-          ToPort: 65535
-          IpProtocol: tcp
-      SecurityGroupIngress:
-        - CidrIp: "0.0.0.0/0"
-          FromPort: 0
-          ToPort: 65535
-          IpProtocol: tcp
-
   RdsFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -61,7 +48,7 @@ Resources:
       Runtime: python3.9
       VpcConfig:
         SecurityGroupIds:
-          - !Ref LambdaSecurityGroup
+          - !Ref LambdaSecurityGroupId
         SubnetIds: !Ref Subnets
       Policies:
         - AWSSecretsManagerGetSecretValuePolicy:
@@ -89,7 +76,7 @@ Resources:
       Runtime: python3.9
       VpcConfig:
         SecurityGroupIds:
-          - !Ref LambdaSecurityGroup
+          - !Ref LambdaSecurityGroupId
         SubnetIds: !Ref Subnets
       Policies:
         - AWSSecretsManagerGetSecretValuePolicy:
