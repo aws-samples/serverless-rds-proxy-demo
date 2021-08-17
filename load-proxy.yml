@@ -1,0 +1,11 @@
+config:
+  target: "https://jrsdfh9r8i.execute-api.us-east-1.amazonaws.com"
+  phases:
+    - duration: 60
+      arrivalRate: 100
+
+scenarios:
+  - name: "Call Function backed by RDS using RDS Proxy"
+    flow:
+      - get:
+          url: "/proxy"
