@@ -1,0 +1,2 @@
+pymysql
+aws-lambda-powertools

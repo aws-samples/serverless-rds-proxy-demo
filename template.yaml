@@ -1,0 +1,126 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  serverless-rds-proxy-demo
+
+  Sample SAM Template for serverless-rds-proxy-demo
+
+Parameters:
+  Vpc:
+    Type: AWS::EC2::VPC::Id
+    Description: "Vpc where function will be deployed"
+  Subnets:
+    Type: List<AWS::EC2::Subnet::Id>
+    Description: "Subnets where function will be deployed. Select two"
+  RdsProxyEndpoint:
+    Type: String
+    Description: "Proxy endpoint"
+  RdsEndpoint:
+    Type: String
+    Description: "RDS Endpoint"
+  Port:
+    Type: Number
+    Description: "Database port"
+    Default: 3306
+  SecretArn:
+    Type: String
+    Description: "Secret ARN where database credentials are stored"
+  ProxyResourceId:
+    Type: String
+    Description: "RDS Proxy resource id. This is last part of RDS proxy ARN, ex: prx-<hash>"
+
+Globals:
+  Function:
+    Timeout: 30
+
+Resources:
+  SampleHttpApi:
+    Type: AWS::Serverless::HttpApi
+
+  LambdaSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: "Lambda with RDS on SAM Security Group"
+      VpcId: !Ref Vpc
+      SecurityGroupEgress:
+        - CidrIp: "0.0.0.0/0"
+          FromPort: 0
+          ToPort: 65535
+          IpProtocol: tcp
+      SecurityGroupIngress:
+        - CidrIp: "0.0.0.0/0"
+          FromPort: 0
+          ToPort: 65535
+          IpProtocol: tcp
+
+  RdsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: rds/
+      Handler: app.lambda_handler
+      Runtime: python3.9
+      VpcConfig:
+        SecurityGroupIds:
+          - !Ref LambdaSecurityGroup
+        SubnetIds: !Ref Subnets
+      Policies:
+        - AWSSecretsManagerGetSecretValuePolicy:
+            SecretArn:
+              !Ref SecretArn
+      Environment:
+        Variables:
+          region: !Ref AWS::Region
+          rds_endpoint: !Ref RdsEndpoint
+          port: !Ref Port
+          secret_arn: !Ref SecretArn
+      Events:
+        HelloWorld:
+          Type: HttpApi
+          Properties:
+            Path: /no-proxy
+            Method: get
+            ApiId: !Ref SampleHttpApi
+
+  RdsProxyFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: rdsproxy/
+      Handler: app.lambda_handler
+      Runtime: python3.9
+      VpcConfig:
+        SecurityGroupIds:
+          - !Ref LambdaSecurityGroup
+        SubnetIds: !Ref Subnets
+      Policies:
+        - AWSSecretsManagerGetSecretValuePolicy:
+            SecretArn:
+              !Ref SecretArn
+        - Statement:
+            - Sid: AllowDbConnect
+              Effect: Allow
+              Action:
+                - rds-db:connect
+              Resource:
+                - !Sub arn:aws:rds-db:${AWS::Region}:${AWS::AccountId}:dbuser:${ProxyResourceId}/*
+      Environment:
+        Variables:
+          region: !Ref AWS::Region
+          rds_endpoint: !Ref RdsProxyEndpoint
+          port: !Ref Port
+          secret_arn: !Ref SecretArn
+      Events:
+        HelloWorld:
+          Type: HttpApi
+          Properties:
+            Path: /proxy
+            Method: get
+            ApiId: !Ref SampleHttpApi
+
+Outputs:
+  RdsProxyApiPath:
+    Description: "API Gateway endpoint URL for rds proxy function"
+    Value: !Sub "https://${SampleHttpApi}.execute-api.${AWS::Region}.amazonaws.com/proxy"
+
+  RdsApiPath:
+    Description: "API Gateway endpoint URL for rds function"
+    Value: !Sub "https://${SampleHttpApi}.execute-api.${AWS::Region}.amazonaws.com/no-proxy"
