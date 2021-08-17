@@ -1,10 +1,15 @@
 # serverless-rds-proxy-demo
 
-This project contains source code and supporting files for a serverless application that you can deploy with the SAM CLI. It includes the following files and folders.
+This project contains source code and supporting files for a serverless application that you can deploy with the SAM CLI.
 
 This project assumes you already have RDS Aurora Mysql cluster up and running. An RDS proxy instance
 is also setup with force IAM authentication enabled. You can choose to follow [this workshop](https://awsauroralabsmy.com/) to have aurora cluster and 
 RDS proxy setup.
+
+## Architecture
+
+![architecture.png](architecture.png) WIP
+
 
 ## Deploy the sample application
 
