@@ -10,7 +10,7 @@ client = boto3.client('rds')  # get the rds object
 
 
 def db_ops():
-    secret = parameters.get_secret(environ.get('secret_arn'), transform='json')
+    secret = parameters.get_secret(environ.get('secret_arn'), transform='json', max_age=60)
     username = secret.get('username')
     password = secret.get('password')
 

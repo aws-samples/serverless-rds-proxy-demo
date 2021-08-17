@@ -27,7 +27,7 @@ def create_proxy_connection_token(username):
 
 
 def db_ops():
-    secret = parameters.get_secret(environ.get('secret_arn'), transform='json')
+    secret = parameters.get_secret(environ.get('secret_arn'), transform='json', max_age=60)
     username = secret.get('username')
 
     token = create_proxy_connection_token(username)
