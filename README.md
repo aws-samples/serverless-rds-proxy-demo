@@ -15,7 +15,7 @@ RDS proxy setup.
 
 ## Architecture
 
-![architecture.png](architecture.png) WIP
+![img.png](architecture.png/img.png)
 
 
 ## Deploy the sample application
