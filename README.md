@@ -1,6 +1,7 @@
 # serverless-rds-proxy-demo
 
-This project contains source code and supporting files for a serverless application that you can deploy with the SAM CLI.
+This project demos benefits of using RDS proxy with serverless workload which depends on relational database like Aurora. Project shows end to end automated setup of RDS Aurora(Mysql) with RDS proxy. 
+Basic serverless architecture is set up using API gateway HTTP API and Lambda Functions.
 
 This project assumes you already have RDS Aurora Mysql cluster up and running. An RDS proxy instance
 is also setup with force IAM authentication enabled. You can choose to create rds cluster with proxy following 
@@ -24,6 +25,9 @@ To use the SAM CLI, you need the following tools.
 
 ## Deploy RDS Aurora Cluster with RDS Proxy
 
+**Note:** If you have already provisioned RDS Aurora cluster with RDS Proxy, you can skip 
+this step and follow [these steps](#deploy-serverless-workload-using-rds-aurora-as-backend) instead.
+
 This stack will take care of provisioning RDS Aurora Mysql along with RDS proxy fronting it inside
 a VPC with 3 private subnet. Required parameters needed by [next step](#deploy-serverless-workload-using-rds-aurora-as-backend)
 is also provided as stack output.
@@ -35,6 +39,7 @@ is also provided as stack output.
 ## Deploy serverless workload using RDS Aurora as backend
 
 To build and deploy your application for the first time, run the following in your shell:
+Pass required parameters during guided deploy.
 
 ```bash
     sam build --use-container

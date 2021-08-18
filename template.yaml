@@ -11,26 +11,26 @@ Parameters:
     Description: "Vpc where function will be deployed"
   Subnets:
     Type: List<AWS::EC2::Subnet::Id>
-    Description: "Subnets where function will be deployed. Select two"
+    Description: "Subnets where function will be deployed. Provide at least two"
   RdsProxyEndpoint:
     Type: String
-    Description: "Proxy endpoint"
+    Description: "RDS Proxy endpoint configured. This should be Read/Write endpoint."
   RdsEndpoint:
     Type: String
-    Description: "RDS Endpoint"
+    Description: "RDS Aurora Cluster Endpoint."
   Port:
     Type: Number
-    Description: "Database port"
+    Description: "Database port. For Mysql 3306 is default."
     Default: 3306
   SecretArn:
     Type: String
-    Description: "Secret ARN where database credentials are stored"
+    Description: "Secret ARN where database credentials are stored."
   ProxyResourceId:
     Type: String
-    Description: "RDS Proxy resource id. This is last part of RDS proxy ARN, ex: prx-<hash>"
+    Description: "RDS Proxy resource id. This is last part of RDS proxy ARN, ex: prx-<hash>. Its required to configure needed permission by the lambda functions."
   LambdaSecurityGroupId:
     Type: AWS::EC2::SecurityGroup::Id
-    Description: "Security group id for lambda function. Make sure traffic from this SG is allowed in database and proxy security group"
+    Description: "Security group id for lambda function. Make sure traffic from this SG is allowed in database and proxy security group."
 
 Globals:
   Function:
