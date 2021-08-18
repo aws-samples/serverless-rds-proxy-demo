@@ -74,7 +74,7 @@ If you used npm to install Artillery globally, run the following command in your
 
 You should see an ASCII dinosaur printed to the terminal. Something like this:
 
-![img.png](img.png)
+![img.png](images/artillery.png)
 
 ### Testing
 
@@ -87,6 +87,12 @@ We can generate load on both the APIs via:
 ```
     artillery run load-proxy.yml
 ```
+
+For a sample load which ran 300 seconds with arrival rate for users at 100, i.e. 30000 request over 5 minutes, below is
+comparison of number of database connection used when connecting via RDS proxy vs directly to RDS Aurora cluster endpoint.
+
+![img.png](metrics.png/img.png)
+ 
 
 ## Security
 
