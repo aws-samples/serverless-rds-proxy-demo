@@ -15,7 +15,7 @@ RDS proxy setup.
 
 ## Architecture
 
-![img.png](architecture.png/img.png)
+![img.png](images/architecture.png)
 
 
 ## Deploy the sample application
@@ -91,7 +91,7 @@ We can generate load on both the APIs via:
 For a sample load which ran 300 seconds with arrival rate for users at 100, i.e. 30000 request over 5 minutes, below is
 comparison of number of database connection used when connecting via RDS proxy vs directly to RDS Aurora cluster endpoint.
 
-![img.png](metrics.png/img.png)
+![img.png](images/metrics.png)
  
 
 ## Security
