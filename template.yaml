@@ -61,7 +61,7 @@ Resources:
           port: !Ref Port
           secret_arn: !Ref SecretArn
       Events:
-        HelloWorld:
+        NoProxy:
           Type: HttpApi
           Properties:
             Path: /no-proxy
@@ -96,7 +96,7 @@ Resources:
           port: !Ref Port
           secret_arn: !Ref SecretArn
       Events:
-        HelloWorld:
+        Proxy:
           Type: HttpApi
           Properties:
             Path: /proxy
