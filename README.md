@@ -4,6 +4,10 @@ This project demos benefits of using RDS proxy with serverless workload which de
 Project shows end to end automated setup of RDS Aurora(Mysql) with RDS proxy. Basic serverless architecture is set up 
 using API gateway HTTP API and Lambda Functions.
 
+Project sets up two endpoints with HTTP API, one which talks directly to RDS Aurora cluster and the other which talks 
+via RDS Proxy. It provides load testing setup to measure the benefits of using RDS proxy in terms of connection pooling 
+and elasticity.
+
 This project assumes you already have RDS Aurora Mysql cluster up and running. An RDS proxy instance
 is also setup with force IAM authentication enabled. You can choose to create rds cluster with proxy following 
 steps [below](#deploy-rds-aurora-cluster-with-rds-proxy) to have aurora cluster and 
