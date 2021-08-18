@@ -1,7 +1,8 @@
 # serverless-rds-proxy-demo
 
-This project demos benefits of using RDS proxy with serverless workload which depends on relational database like Aurora. Project shows end to end automated setup of RDS Aurora(Mysql) with RDS proxy. 
-Basic serverless architecture is set up using API gateway HTTP API and Lambda Functions.
+This project demos benefits of using RDS proxy with serverless workload which depends on relational database like RDS Aurora.
+Project shows end to end automated setup of RDS Aurora(Mysql) with RDS proxy. Basic serverless architecture is set up 
+using API gateway HTTP API and Lambda Functions.
 
 This project assumes you already have RDS Aurora Mysql cluster up and running. An RDS proxy instance
 is also setup with force IAM authentication enabled. You can choose to create rds cluster with proxy following 
@@ -15,12 +16,13 @@ RDS proxy setup.
 
 ## Deploy the sample application
 
-The Serverless Application Model Command Line Interface (SAM CLI) is an extension of the AWS CLI that adds functionality for building and testing Lambda applications. It uses Docker to run your functions in an Amazon Linux environment that matches Lambda. It can also emulate your application's build environment and API.
+The Serverless Application Model Command Line Interface (SAM CLI) is an extension of the AWS CLI that adds functionality for building and testing Lambda applications. 
+It uses Docker to run your functions in an Amazon Linux environment that matches Lambda. It can also emulate your application's build environment and API.
 
 To use the SAM CLI, you need the following tools.
 
 * SAM CLI - [Install the SAM CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html)
-* [Python 3 installed](https://www.python.org/downloads/)
+* [Python 3.9 installed](https://www.python.org/downloads/)
 * Docker - [Install Docker community edition](https://hub.docker.com/search/?type=edition&offering=community)
 
 ## Deploy RDS Aurora Cluster with RDS Proxy
