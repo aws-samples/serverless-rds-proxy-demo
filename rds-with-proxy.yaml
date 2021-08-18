@@ -94,6 +94,10 @@ Resources:
           FromPort:  !FindInMap [ ClusterSettings, global, port ]
           ToPort: !FindInMap [ ClusterSettings, global, port ]
           SourceSecurityGroupId: !GetAtt lambdaSg.GroupId
+        - IpProtocol: -1
+          FromPort: -1
+          ToPort: -1
+          SourceSecurityGroupId: !GetAtt lambdaSg.GroupId
 
   ruleDbClusterSecGroupIngressSelf:
     Type: "AWS::EC2::SecurityGroupIngress"
@@ -115,6 +119,29 @@ Resources:
       Tags:
         - Key: Name
           Value: !Sub "${AWS::StackName}-cluster-secret"
+
+  s3Enpoint:
+    Type: "AWS::EC2::VPCEndpoint"
+    Properties:
+      VpcId: !Ref vpc
+      SubnetIds:
+        - !Ref sub1Private
+        - !Ref sub2Private
+        - !Ref sub3Private
+      PrivateDnsEnabled: true
+      ServiceName: !Sub "com.amazonaws.${AWS::Region}.secretsmanager"
+      SecurityGroupIds:
+        - !Ref dbClusterSecGroup
+      VpcEndpointType: Interface
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Principal: "*"
+            Effect: Allow
+            Action:
+              - secretsmanager:GetSecretValue
+            Resource:
+              - !Ref secretClusterMasterUser
 
   roleEnhancedMonitoring:
     Type: "AWS::IAM::Role"
@@ -261,16 +288,16 @@ Resources:
       VpcSecurityGroupIds:
         - !GetAtt dbClusterSecGroup.GroupId
 
-#  proxyTargetGroup:
-#    Type: AWS::RDS::DBProxyTargetGroup
-#    Properties:
-#      DBProxyName: !Ref dbProxy
-#      DBClusterIdentifiers: [ !Ref dbCluster ]
-#      TargetGroupName: default
-#      ConnectionPoolConfigurationInfo:
-#        MaxConnectionsPercent: 5
-#        MaxIdleConnectionsPercent: 4
-#        ConnectionBorrowTimeout: 120
+  proxyTargetGroup:
+    Type: AWS::RDS::DBProxyTargetGroup
+    Properties:
+      DBProxyName: !Ref dbProxy
+      DBClusterIdentifiers: [ !Ref dbCluster ]
+      TargetGroupName: default
+      ConnectionPoolConfigurationInfo:
+        MaxConnectionsPercent: 5
+        MaxIdleConnectionsPercent: 4
+        ConnectionBorrowTimeout: 120
 
 Outputs:
   vpcId:
