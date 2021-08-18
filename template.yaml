@@ -104,6 +104,10 @@ Resources:
             ApiId: !Ref SampleHttpApi
 
 Outputs:
+  ApiBasePath:
+    Description: "API Gateway endpoint URL"
+    Value: !Sub "https://${SampleHttpApi}.execute-api.${AWS::Region}.amazonaws.com"
+
   RdsProxyApiPath:
     Description: "API Gateway endpoint URL for rds proxy function"
     Value: !Sub "https://${SampleHttpApi}.execute-api.${AWS::Region}.amazonaws.com/proxy"
