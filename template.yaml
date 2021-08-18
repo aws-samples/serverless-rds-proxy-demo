@@ -79,9 +79,6 @@ Resources:
           - !Ref LambdaSecurityGroupId
         SubnetIds: !Ref Subnets
       Policies:
-        - AWSSecretsManagerGetSecretValuePolicy:
-            SecretArn:
-              !Ref SecretArn
         - Statement:
             - Sid: AllowDbConnect
               Effect: Allow
@@ -94,7 +91,7 @@ Resources:
           region: !Ref AWS::Region
           rds_endpoint: !Ref RdsProxyEndpoint
           port: !Ref Port
-          secret_arn: !Ref SecretArn
+          username: !Sub "{{resolve:secretsmanager:${SecretArn}:SecretString:username}}"
       Events:
         Proxy:
           Type: HttpApi

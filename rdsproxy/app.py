@@ -1,7 +1,6 @@
 import json
 import boto3
 from os import environ
-from aws_lambda_powertools.utilities import parameters
 
 import pymysql
 
@@ -27,8 +26,7 @@ def create_proxy_connection_token(username):
 
 
 def db_ops():
-    secret = parameters.get_secret(environ.get('secret_arn'), transform='json', max_age=60)
-    username = secret.get('username')
+    username = environ.get('username')
 
     token = create_proxy_connection_token(username)
 
