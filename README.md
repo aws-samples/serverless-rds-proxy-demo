@@ -78,7 +78,9 @@ You should see an ASCII dinosaur printed to the terminal. Something like this:
 
 ### Testing
 
-We can generate load on both the APIs via:
+Before starting load testing, make sure `target` in files `load-no-proxy.yml` and  `load-proxy.yml` is update with the 
+created HTTP API endpoint. The endpoint is also provided as stack output `ApiBasePath` when 
+executing [above steps](#deploy-serverless-workload-using-rds-aurora-as-backend). You can generate load on both the APIs via:
 
 ```
     artillery run load-no-proxy.yml
