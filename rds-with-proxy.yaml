@@ -290,6 +290,10 @@ Resources:
 
   proxyTargetGroup:
     Type: AWS::RDS::DBProxyTargetGroup
+    DependsOn:
+      - dbCluster
+      - dbNode1
+      - dbNode2
     Properties:
       DBProxyName: !Ref dbProxy
       DBClusterIdentifiers: [ !Ref dbCluster ]
