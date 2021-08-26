@@ -120,7 +120,7 @@ Resources:
         - Key: Name
           Value: !Sub "${AWS::StackName}-cluster-secret"
 
-  s3Enpoint:
+  secretManagerVpcEndpoint:
     Type: "AWS::EC2::VPCEndpoint"
     Properties:
       VpcId: !Ref vpc
@@ -263,13 +263,7 @@ Resources:
                 Effect: Allow
                 Resource:
                   - !Ref secretClusterMasterUser
-              - Effect: Allow
-                Action:
-                  - "kms:Decrypt"
-                Resource: !Sub "arn:aws:kms:${AWS::Region}:${AWS::AccountId}:key/4cfa8eec-b704-42aa-a4aa-50c44bf7c2c6"
-                Condition:
-                  StringEquals:
-                    kms:ViaService: !Sub "secretsmanager.${AWS::Region}.amazonaws.com"
+
   dbProxy:
     Type: AWS::RDS::DBProxy
     Properties:
