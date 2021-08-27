@@ -9,5 +9,8 @@ unzip aws-sam-cli-linux-x86_64.zip -d sam-installation
 sudo ./sam-installation/install
 which sam
 sam --version
+sudo npm install n -g
+sudo n stable
+PATH="$PATH"
 npm install -g artillery@latest
 artillery dino
