@@ -38,8 +38,7 @@ Parameters:
     Description: "Security group id for lambda function. Make sure traffic from this SG is allowed in database and proxy security group."
 
 Conditions:
-  CreateLambdaSg:
-  - !Equals ["True", !Ref CreateFunctionSecurityGroup]
+  CreateLambdaSg: !Equals ["True", !Ref CreateFunctionSecurityGroup]
 
 Globals:
   Function:
