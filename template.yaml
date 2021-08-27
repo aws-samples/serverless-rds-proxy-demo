@@ -28,15 +28,42 @@ Parameters:
   ProxyResourceId:
     Type: String
     Description: "RDS Proxy resource id. This is last part of RDS proxy ARN, ex: prx-<hash>. Its required to configure needed permission by the lambda functions."
+  CreateFunctionSecurityGroup:
+    Type: String
+    AllowedValues: ['True', 'False']
+    Default: 'False'
+    Description: "Should a security group for function be created? Set value as True only if you do not already have specified LambdaSecurityGroupId. Make sure traffic from this SG is allowed in database and proxy security group."
   LambdaSecurityGroupId:
     Type: AWS::EC2::SecurityGroup::Id
     Description: "Security group id for lambda function. Make sure traffic from this SG is allowed in database and proxy security group."
+
+Conditions:
+  CreateLambdaSg:
+  - !Equals ["True", !Ref CreateFunctionSecurityGroup]
 
 Globals:
   Function:
     Timeout: 30
 
 Resources:
+  LambdaSg:
+    Type: AWS::EC2::SecurityGroup
+    Condition: CreateLambdaSg
+    Properties:
+      GroupDescription: Security Groups for the AWS Lambda for accessing RDS/Proxy
+      GroupName: 'lambda-sg'
+      SecurityGroupEgress:
+        - CidrIp: "0.0.0.0/0"
+          FromPort: 0
+          ToPort: 65535
+          IpProtocol: tcp
+      SecurityGroupIngress:
+        - CidrIp: "0.0.0.0/0"
+          FromPort: 0
+          ToPort: 65535
+          IpProtocol: tcp
+      VpcId: !Ref Vpc
+
   SampleHttpApi:
     Type: AWS::Serverless::HttpApi
 
@@ -112,3 +139,7 @@ Outputs:
   RdsApiPath:
     Description: "API Gateway endpoint URL for rds function"
     Value: !Sub "https://${SampleHttpApi}.execute-api.${AWS::Region}.amazonaws.com/no-proxy"
+
+  LambdaSecurityGroupId:
+    Description: "Security group id attached to lambda functions. Make sure traffic from this SG is allowed in database and proxy security group on db port"
+    Value: !GetAtt LambdaSg.GroupId
