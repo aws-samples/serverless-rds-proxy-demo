@@ -12,5 +12,5 @@ sam --version
 sudo npm install n -g
 sudo n stable
 PATH="$PATH"
-npm install -g artillery@latest
+sudo npm install -g artillery@latest
 artillery dino
