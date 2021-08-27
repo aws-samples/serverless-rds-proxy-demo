@@ -1,7 +1,7 @@
 config:
   target: "https://jczw4vfi35.execute-api.us-east-1.amazonaws.com"
   phases:
-    - duration: 300
+    - duration: 120
       arrivalRate: 100
 
 scenarios:
