@@ -103,7 +103,7 @@ Resources:
       Runtime: python3.9
       VpcConfig:
         SecurityGroupIds:
-          - !Ref LambdaSecurityGroupId
+          - !If [CreateLambdaSg, !Ref LambdaSg, !Ref LambdaSecurityGroupId]
         SubnetIds: !Ref Subnets
       Policies:
         - Statement:
