@@ -35,6 +35,7 @@ Parameters:
     Description: "Should a security group for function be created? Set value as True only if you do not already have specified LambdaSecurityGroupId. Make sure traffic from this SG is allowed in database and proxy security group."
   LambdaSecurityGroupId:
     Type: AWS::EC2::SecurityGroup::Id
+    Default: ""
     Description: "Security group id for lambda function. Make sure traffic from this SG is allowed in database and proxy security group."
 
 Conditions:
