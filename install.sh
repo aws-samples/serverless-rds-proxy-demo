@@ -1,3 +1,4 @@
+sudo apt install awscli
 sudo apt install docker.io
 sudo apt install unzip
 sudo usermod -aG docker $USER
