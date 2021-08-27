@@ -31,7 +31,7 @@ Parameters:
   CreateFunctionSecurityGroup:
     Type: String
     AllowedValues: ['True', 'False']
-    Default: 'False'
+    Default: 'True'
     Description: "Should a security group for function be created? Set value as True only if you do not already have specified LambdaSecurityGroupId. Make sure traffic from this SG is allowed in database and proxy security group."
   LambdaSecurityGroupId:
     Type: AWS::EC2::SecurityGroup::Id
