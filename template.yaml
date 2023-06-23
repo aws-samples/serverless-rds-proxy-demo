@@ -21,7 +21,7 @@ Parameters:
   Port:
     Type: Number
     Description: "Database port. For Mysql 3306 is default."
-    Default: 3306
+    Default: 4510
   SecretArn:
     Type: String
     Description: "Secret ARN where database credentials are stored."
@@ -51,7 +51,7 @@ Resources:
     Condition: CreateLambdaSg
     Properties:
       GroupDescription: Security Groups for the AWS Lambda for accessing RDS/Proxy
-      GroupName: 'lambda-sg'
+      GroupName: 'lambda-gs'
       SecurityGroupEgress:
         - CidrIp: "0.0.0.0/0"
           FromPort: 0

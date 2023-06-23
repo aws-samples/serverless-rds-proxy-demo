@@ -39,8 +39,8 @@ a VPC with 3 private subnet. Required parameters needed by [next step](#deploy-s
 is also provided as stack output.
 
 ```bash
-    sam build -t rds-with-proxy.yaml --use-container
-    sam deploy -t rds-with-proxy.yaml --guided
+    samlocal build -t rds-with-proxy.yaml --use-container
+    samlocal deploy -t rds-with-proxy.yaml --guided
 ```
 ## Deploy serverless workload using RDS Aurora as backend
 
@@ -48,8 +48,8 @@ To build and deploy your application for the first time, run the following in yo
 Pass required parameters during guided deploy.
 
 ```bash
-    sam build --use-container
-    sam deploy --guided
+    samlocal build --use-container
+    samlocal deploy --guided
 ```
 
 
