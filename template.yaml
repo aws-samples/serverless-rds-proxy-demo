@@ -51,7 +51,7 @@ Resources:
     Condition: CreateLambdaSg
     Properties:
       GroupDescription: Security Groups for the AWS Lambda for accessing RDS/Proxy
-      GroupName: 'lambda-gs'
+      GroupName: 'lambda-sg-1'
       SecurityGroupEgress:
         - CidrIp: "0.0.0.0/0"
           FromPort: 0
