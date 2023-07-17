@@ -1,9 +1,8 @@
 config:
-  target: "https://jczw4vfi35.execute-api.us-east-1.amazonaws.com"
+  target: "https://b53947d2.execute-api.localhost.localstack.cloud:4566"
   phases:
-    - duration: 120
-      arrivalRate: 100
-
+    - duration: 10
+      arrivalRate: 1
 scenarios:
   - name: "Call Function backed by RDS without using RDS Proxy"
     flow:
