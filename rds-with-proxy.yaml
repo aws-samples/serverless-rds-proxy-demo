@@ -9,16 +9,12 @@ Mappings:
       subPrv1Cidr: 192.168.0.0/24
       subPrv2Cidr: 192.168.1.0/24
       subPrv3Cidr: 192.168.2.0/24
-      # vpcCidr: 172.31.0.0/16
-      # subPrv1Cidr: 172.31.0.0/24
-      # subPrv2Cidr: 172.31.1.0/24
-      # subPrv3Cidr: 172.31.2.0/24
   ClusterSettings:
     global:
       dbSchema: mylab
-      dbVersion: 5.7.mysql_aurora.2.11.2 #5.7.mysql_aurora.2.09.1
-      dbEngine: aurora-mysql
-      dbFamily: aurora-mysql5.7
+      dbVersion: "13.4"
+      dbEngine: aurora-postgresql
+      dbFamily: aurora-postgresql13.4
       port: 4510
       nodeType: db.r5.large
 
@@ -206,6 +202,7 @@ Resources:
       EnableCloudwatchLogsExports: [ error, slowquery ]
       BacktrackWindow: 86400
       EnableIAMDatabaseAuthentication: true
+      PubliclyAccessible: true
       Tags:
         - Key: Name
           Value: !Sub "${AWS::StackName}-mysql-cluster"
@@ -221,7 +218,8 @@ Resources:
       Engine: !FindInMap [ ClusterSettings, global, dbEngine ]
       MonitoringInterval: 1
       MonitoringRoleArn: !GetAtt roleEnhancedMonitoring.Arn
-      PubliclyAccessible: false
+      PubliclyAccessible: true
+      EnableIAMDatabaseAuthentication: true
       EnablePerformanceInsights: true
       PerformanceInsightsRetentionPeriod: 7
       Tags:
@@ -239,7 +237,8 @@ Resources:
       Engine: !FindInMap [ ClusterSettings, global, dbEngine ]
       MonitoringInterval: 1
       MonitoringRoleArn: !GetAtt roleEnhancedMonitoring.Arn
-      PubliclyAccessible: false
+      PubliclyAccessible: true
+      EnableIAMDatabaseAuthentication: true
       EnablePerformanceInsights: true
       PerformanceInsightsRetentionPeriod: 7
       Tags:
@@ -305,6 +304,9 @@ Outputs:
   vpcId:
     Description: "VPC id"
     Value: !Ref vpc
+  subnetIds:
+    Description: "Subnet ids"
+    Value: !Join [ ",", [ !Ref sub1Private, !Ref sub2Private, !Ref sub3Private ] ]
   sub1Private:
     Description: "Private subnet 1"
     Value: !Ref sub1Private

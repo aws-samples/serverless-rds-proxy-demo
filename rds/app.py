@@ -1,32 +1,31 @@
 import json
 import boto3
 from os import environ
-from aws_lambda_powertools.utilities import parameters
 
-import pymysql
+import psycopg2
 
 
-client = boto3.client('rds')  # get the rds object
-
+localstackHost = f"http://{environ.get('LOCALSTACK_HOSTNAME')}:{environ.get('EDGE_PORT')}"
+client = boto3.client('rds', endpoint_url=localstackHost)
+sm = boto3.client('secretsmanager', endpoint_url=localstackHost)
 
 def db_ops():
-    secret = parameters.get_secret(environ.get('secret_arn'), transform='json', max_age=60)
-    username = secret.get('username')
-    password = secret.get('password')
+    secret_arn = sm.list_secrets()["SecretList"][0]["ARN"]
+    secret = sm.get_secret_value(SecretId=secret_arn)
+    username = json.loads(secret["SecretString"]).get('username')
+    password = json.loads(secret["SecretString"]).get('password')
 
     try:
         # create a connection object
-        connection = pymysql.connect(
-            host=environ.get('rds_endpoint'),
-            # getting the rds proxy endpoint from the environment variables
+        connection = psycopg2.connect(
+            host=environ.get('LOCALSTACK_HOSTNAME'),
+            database=environ.get('database'),
             user=username,
             password=password,
-            db=environ.get('database'),
-            charset='utf8mb4',
-            cursorclass=pymysql.cursors.DictCursor,
-            ssl={"use": True}
+            port=4510,
         )
-    except pymysql.MySQLError as e:
+    except psycopg2.Error as e:
+        print(e)
         return e
 
     return connection
@@ -34,8 +33,9 @@ def db_ops():
 
 def lambda_handler(event, context):
     conn = db_ops()
+    print("connection: ", conn)
     cursor = conn.cursor()
-    query = "select curdate() from dual"
+    query = "SELECT version()"
     cursor.execute(query)
     results = cursor.fetchmany(1)
 
@@ -43,3 +43,4 @@ def lambda_handler(event, context):
         'statusCode': 200,
         'body': json.dumps(results, default=str)
     }
+    

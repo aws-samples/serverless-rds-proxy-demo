@@ -1,2 +1,1 @@
-pymysql
-aws-lambda-powertools
+psycopg2-binary
