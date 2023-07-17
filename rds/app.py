@@ -33,7 +33,6 @@ def db_ops():
 
 def lambda_handler(event, context):
     conn = db_ops()
-    print("connection: ", conn)
     cursor = conn.cursor()
     query = "SELECT version()"
     cursor.execute(query)
